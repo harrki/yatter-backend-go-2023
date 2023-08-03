@@ -24,7 +24,7 @@ func NewStatus(db *sqlx.DB) repository.Status {
 
 func (r *status) FindByID(ctx context.Context, id string) (*object.Status, error) {
 	entity := new(object.Status)
-	err := r.db.QueryRowxContext(ctx, "select * from status where id = ?", id).StructScan(entity)
+	err := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE id = ?", id).StructScan(entity)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -54,7 +54,7 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*obje
 	}
 
 	entity := new(object.Status)
-	err_get := r.db.QueryRowxContext(ctx, "select * from status where id = LAST_INSERT_ID()").StructScan(entity)
+	err_get := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE id = LAST_INSERT_ID()").StructScan(entity)
 	if err_get != nil {
 		return nil, err_get
 	}

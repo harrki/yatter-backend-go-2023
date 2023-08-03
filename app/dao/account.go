@@ -26,7 +26,7 @@ func NewAccount(db *sqlx.DB) repository.Account {
 // FindByUsername : ユーザ名からユーザを取得
 func (r *account) FindByUsername(ctx context.Context, username string) (*object.Account, error) {
 	entity := new(object.Account)
-	err := r.db.QueryRowxContext(ctx, "select * from account where username = ?", username).StructScan(entity)
+	err := r.db.QueryRowxContext(ctx, "SELECT * FROM account WHERE username = ?", username).StructScan(entity)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -56,7 +56,7 @@ func (r *account) CreateUser(ctx context.Context, account *object.Account) (*obj
 	}
 
 	entity := new(object.Account)
-	err_get := r.db.QueryRowxContext(ctx, "select * from account where id = LAST_INSERT_ID()").StructScan(entity)
+	err_get := r.db.QueryRowxContext(ctx, "SELECT * FROM account WHERE id = LAST_INSERT_ID()").StructScan(entity)
 	if err_get != nil {
 		return nil, err_get
 	}
