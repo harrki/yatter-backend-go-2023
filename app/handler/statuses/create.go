@@ -33,7 +33,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	status.Content = req.Status
 
 	if err := h.sr.CreateStatus(ctx, status); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
