@@ -13,10 +13,10 @@ func (h *handler) Get(w http.ResponseWriter, r *http.Request) {
 
 	username := chi.URLParam(r, "username")
 	if account, err := h.ar.FindByUsername(ctx, username); err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	} else if account == nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	} else {
 		json.NewEncoder(w).Encode(account)
