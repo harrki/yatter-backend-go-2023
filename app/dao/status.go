@@ -22,7 +22,21 @@ func NewStatus(db *sqlx.DB) repository.Status {
 	return &status{db: db}
 }
 
-func (r *status) CreateStatus(ctx context.Context, status *object.Status) error {
+func (r *status) FindByID(ctx context.Context, id string) (*object.Status, error) {
+	entity := new(object.Status)
+	err := r.db.QueryRowxContext(ctx, "select * from status where id = ?", id).StructScan(entity)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+
+		return nil, fmt.Errorf("failed to find status from db: %w", err)
+	}
+
+	return entity, nil
+}
+
+func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
 	tx, _ := r.db.Beginx()
 	var err error
 	defer func() {
@@ -36,21 +50,13 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) error 
 	}()
 
 	if _, err = r.db.NamedExec("INSERT INTO status (account_id, content, url) VALUES (:account_id, :content, :url)", status); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
-}
-
-func (r *status) FindByID(ctx context.Context, id string) (*object.Status, error) {
 	entity := new(object.Status)
-	err := r.db.QueryRowxContext(ctx, "select * from status where id = ?", id).StructScan(entity)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil
-		}
-
-		return nil, fmt.Errorf("failed to find status from db: %w", err)
+	err_get := r.db.QueryRowxContext(ctx, "select * from status where id = LAST_INSERT_ID()").StructScan(entity)
+	if err_get != nil {
+		return nil, err_get
 	}
 
 	return entity, nil

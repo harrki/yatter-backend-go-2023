@@ -32,7 +32,8 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	status.AccountID = auth.AccountOf(r).ID
 	status.Content = req.Status
 
-	if err := h.sr.CreateStatus(ctx, status); err != nil {
+	status, err := h.sr.CreateStatus(ctx, status)
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
