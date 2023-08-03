@@ -30,7 +30,8 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.ar.CreateUser(ctx, account); err != nil {
+	account, err := h.ar.CreateUser(ctx, account)
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

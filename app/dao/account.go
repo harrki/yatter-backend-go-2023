@@ -38,7 +38,7 @@ func (r *account) FindByUsername(ctx context.Context, username string) (*object.
 	return entity, nil
 }
 
-func (r *account) CreateUser(ctx context.Context, account *object.Account) error {
+func (r *account) CreateUser(ctx context.Context, account *object.Account) (*object.Account, error) {
 	tx, _ := r.db.Beginx()
 	var err error
 	defer func() {
@@ -52,8 +52,14 @@ func (r *account) CreateUser(ctx context.Context, account *object.Account) error
 	}()
 
 	if _, err = r.db.NamedExec("INSERT INTO account (username, password_hash) VALUES (:username, :password_hash)", account); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	entity := new(object.Account)
+	err_get := r.db.QueryRowxContext(ctx, "select * from account where id = LAST_INSERT_ID()").StructScan(entity)
+	if err_get != nil {
+		return nil, err_get
+	}
+
+	return entity, nil
 }
