@@ -24,6 +24,7 @@ func NewTimeline(db *sqlx.DB) repository.Timeline {
 	return &timeline{db: db}
 }
 
+// Search : SearchRequestを受け取って条件に合致したstatusを取得
 func (r *timeline) Search(ctx context.Context, sr *object.SearchRequest) (*[]object.Status, error) {
 	entities := make([]object.Status, 0)
 

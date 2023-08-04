@@ -22,6 +22,7 @@ func NewStatus(db *sqlx.DB) repository.Status {
 	return &status{db: db}
 }
 
+// FindByID : status.idから情報を取得
 func (r *status) FindByID(ctx context.Context, id string) (*object.Status, error) {
 	entity := new(object.Status)
 	err := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE id = ?", id).StructScan(entity)
@@ -36,6 +37,7 @@ func (r *status) FindByID(ctx context.Context, id string) (*object.Status, error
 	return entity, nil
 }
 
+// CreateStatus : statusの作成
 func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
 	tx, _ := r.db.Beginx()
 	var err error

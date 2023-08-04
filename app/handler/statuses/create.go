@@ -18,6 +18,7 @@ type AddRequest struct {
 	Medias []Media
 }
 
+// Handle request for `POST /v1/statuses`
 func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

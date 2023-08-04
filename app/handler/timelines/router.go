@@ -11,7 +11,7 @@ type handler struct {
 	tr repository.Timeline
 }
 
-// Create Handler for `/v1/statuses/`
+// Create Handler for `/v1/timelines`
 func NewRouter(tr repository.Timeline) http.Handler {
 	r := chi.NewRouter()
 

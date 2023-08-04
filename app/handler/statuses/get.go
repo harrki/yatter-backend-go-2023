@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Handle request for `GET /v1/statuses`
 func (h *handler) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")

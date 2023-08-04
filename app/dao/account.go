@@ -38,6 +38,7 @@ func (r *account) FindByUsername(ctx context.Context, username string) (*object.
 	return entity, nil
 }
 
+// CreateUser : ユーザを追加
 func (r *account) CreateUser(ctx context.Context, account *object.Account) (*object.Account, error) {
 	tx, _ := r.db.Beginx()
 	var err error
