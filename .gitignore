@@ -19,3 +19,13 @@
 /.data/
 
 .DS_Store
+
+/files/*
+!/files/images/
+/files/images/*
+!/files/images/header
+/files/images/header/*
+!/files/images/header/.gitkeep
+!/files/images/avatar
+/files/images/avatar/*
+!/files/images/avatar/.gitkeep
